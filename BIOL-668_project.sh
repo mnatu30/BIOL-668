@@ -53,4 +53,15 @@ cp -v fnpath qdir
 
 
 
-#create table 
+#make summary table file
+
+touch seq_summary.txt
+
+echo "sequence\tlength" > $HOME/FASTQ_SCORES/seq_summary.txt
+
+#iterate over fastq file in directory
+
+for f in $HOME/FASTQ_SCORES/*.fastq
+  do
+    awk 'NR%4==2 {len += length($0)} END {print FILENAME"\t"len}' $f >> $HOME/FASTQ_SCORES/seq_summary.txt
+done
