@@ -14,43 +14,38 @@ read -p "Is this a file(f) or a directory(d) (f|d)?" fntype
 if [ $fntype == "f" ]
 then
   echo "Finding file..."
-  fnpath=$(find ~ -type f -name $fn)
+  goalpath=$(find ~ -type f -name $fn)
   echo "Found it!"
-  qdir=~/FASTQ_SCORES
-  if [ -d "$qdir" ]
-  then
-    echo "Directory $HOME/FASTQ_SCORES exists. "
-  else
-    echo "Directory does not exist."
-    echo Creating Directory...
-    mkdir ~/FASTQ_SCORES
-    echo "Created FASTQ_SCORES in $HOME directory with added file(s)."
-  fi
+  echo $goalpath
 else
   echo "Finding directory..."
-  dirpath=$(FIND ~ -type d -name $fn)
+  goalpath=$(FIND ~ -type d -name $fn)
   echo "Found it!"
-  if [ -d "$qdir" ]
-  then
-    echo "Directory $HOME/FASTQ_SCORES exists. "
-  else
-    echo "Directory does not exist."
-    echo Creating Directory...
-    mkdir ~/FASTQ_SCORES
-    cp $dirpath ~/FASTQ_SCORES
-    echo "Created FASTQ_SCORES in $HOME directory with added file(s)."
-  fi
+  echo $goalpath
 
 fi
 
 
-#making new directory for raw and edited .fastq files
+#making new directory for .fastq files that will be used for this bash script
 qdir=~/FASTQ_SCORES
+if [ -d "$qdir" ]
+then
+  echo "Directory $HOME/FASTQ_SCORES exists. "
+else
+  echo "Making directory.. "
+  mkdir $qdir
+  
+
+#moving files to new directory
 
 
 
-cp -v fnpath qdir
+
+
+
+
 
 
 
 #create table 
+
