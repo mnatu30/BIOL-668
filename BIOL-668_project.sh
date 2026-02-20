@@ -4,39 +4,63 @@
 
 #commands
 
-echo "Welcome! Let's look at your quality scores! We can work with a directory of files or an individual file!"
+echo "Welcome! Let's look at your quality scores! We can work with a directory of files or an individual file (.fastq)!"
 read -p "What's the file/directory you want to work with?" fn
 read -p "Is this a file(f) or a directory(d) (f|d)?" fntype
 
+qdir=~/FASTQ_SCORES
 
 #finding if it is a specific file or directory of files
 
 if [ $fntype == "f" ]
-then
-  echo "Finding file..."
-  goalpath=$(find ~ -type f -name $fn)
-  echo "Found it!"
-  echo $goalpath
-else
-  echo "Finding directory..."
-  goalpath=$(FIND ~ -type d -name $fn)
-  echo "Found it!"
-  echo $goalpath
+then 
+   echo "Finding file..."
+   goalpathfn=$(find ~ -type f -name $fn)
 
+elif [ $fntype == "d" ]
+then
+   echo "Finding directory..."
+   goalpathdir=$(find ~ -type d -name $fn)
+else
+   echo "Something went wrong. Try again."
 fi
 
 
-#making new directory for .fastq files that will be used for this bash script
-qdir=~/FASTQ_SCORES
-if [ -d "$qdir" ]
+#checking if file/directory exists, finding/creating dir QUALITY_SCORES and moving target file(s) into dir#ectory 
+if [ -e "$goalpathfn" ]
 then
-  echo "Directory $HOME/FASTQ_SCORES exists. "
+  echo "Found it!"
+  if [ -d "$qdir" ]
+  then
+    echo "Directory $HOME/FASTQ_SCORES exists. "
+    cp -v "$goalpathfn" "$qdir"
+    echo "New directory made with file added. "
+  else
+    echo "Making directory.. "
+    mkdir $qdir
+    cp -v "$goalpathfn" "$qdir"
+    echo "New directory made with file added. "
+  fi
+elif [ -d "$goalpathdir" ]
+then
+  echo "Found it!"
+  if [ -d "$qdir" ]
+  then
+    echo "Directory $HOME/FASTQ_SCORES exists. "
+    cp -v "$goalpathdir"/* "$qdir"
+    echo "New directory made with file(s) added. "
+  else
+    echo "Making directory.. "
+    mkdir $qdir
+    cp -v "$goalpathdir"/* "$qdir"
+    echo "New directory made with file added. "
+  fi
 else
-  echo "Making directory.. "
-  mkdir $qdir
-  
+  echo "Something went wrong. Try again. "
+fi
 
-#moving files to new directory
+
+
 
 
 
